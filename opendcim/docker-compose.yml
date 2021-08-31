@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+  opendcim:
+    image: opendcim/opendcim:21.01
+    ports:
+      - 192.168.1.254:8281:80
+    volumes:
+      - opendcim-data:/opt/opendcim
+    links:
+      - mysql
+    environment:
+      OPENDCIM_DB_HOST: mysql
+      OPENDCIM_AUTH: LDAP
+      TZ: 'Asia/Taipei'
+    network_mode: bridge
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: hiserver
+      MYSQL_DATABASE: dcim
+      MYSQL_USER: dcim
+      MYSQL_PASSWORD: dcim
+    network_mode: bridge
+volumes:
+  opendcim-data:
+  mysql-data:
