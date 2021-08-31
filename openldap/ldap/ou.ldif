@@ -1,0 +1,11 @@
+dn: ou=users,dc=viking,dc=csie,dc=org
+changeType: add
+objectClass: organizationalUnit
+objectClass: top
+ou: users
+
+dn: ou=users,dc=viking,dc=csie,dc=org
+changeType: add
+objectClass: organizationalUnit
+objectClass: top
+ou: groups

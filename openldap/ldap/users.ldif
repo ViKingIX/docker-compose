@@ -1,0 +1,8 @@
+dn: cn=viking,ou=users,dc=viking,dc=csie,dc=org
+changeType: add
+objectClass: inetOrgPerson
+objectClass: top
+sn: King
+cn: viking
+uid: viking
+userPassword: {SHA512}YOCRrBzY/KSMGaKZtQ5Vhs/kUL4PWtlHsqMeTqdtuIGHHomTQwRRjXc4gChq1p99j6qJpkVeOgySVyrjGXj80w==

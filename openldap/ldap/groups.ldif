@@ -1,0 +1,13 @@
+dn: cn=admin,ou=groups,dc=viking,dc=csie,dc=org
+changeType: add
+objectClass: posixGroup
+cn: admin
+gidNumber: 1000
+memberUid: viking
+
+dn: cn=user,ou=groups,dc=viking,dc=csie,dc=org
+changeType: add
+objectClass: posixGroup
+cn: user
+gidNumber: 1001
+memberUid: viking

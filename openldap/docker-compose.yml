@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+  openldap:
+    image: osixia/openldap
+    hostname: ldap.viking.csie.org
+    ports:
+      - ${LAN_IP}:389:389
+      - ${LAN_IP}:636:636
+    volumes:
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime
+      - openldap-data:/var/lib/ldap
+      - openldap-conf:/etc/ldap/slapd.d
+      - ${PWD}/certs:/container/service/slapd/assets/certs
+    environment:
+      LDAP_ORGANISATION: ViKing's
+      LDAP_DOMAIN: viking.csie.org
+      LDAP_BASE_DN: dc=viking,dc=csie,dc=org
+      LDAP_ADMIN_PASSWORD: hiserver
+      LDAP_TLS_CRT_FILENAME: cert1.pem
+      LDAP_TLS_KEY_FILENAME: privkey1.pem
+      LDAP_TLS_CA_CRT_FILENAME: fullchain1.pem
+      LDAP_TLS_VERIFY_CLIENT: try
+    restart: unless-stopped
+  phpldapadmin:
+    image: osixia/phpldapadmin
+    ports:
+      - ${LAN_IP}:8280:80
+    environment:
+      PHPLDAPADMIN_HTTPS: 'false'
+      PHPLDAPADMIN_LDAP_HOSTS: openldap
+    restart: unless-stopped
+# ssp:
+#   image: ltbproject/self-service-password
+#   ports:
+#     - ${LAN_IP}:8281:80
+#   volumes:
+#     - ${PWD}/ssp/config.inc.php:/var/www/conf/config.inc.local.php
+#   restart: unless-stopped
+volumes:
+  openldap-data:
+  openldap-conf:
