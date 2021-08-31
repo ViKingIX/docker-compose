@@ -1,0 +1,52 @@
+version: '3.9'
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - ${LAN_IP}:9090:9090
+    volumes:
+      - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime
+      - prometheus-data:/prometheus
+      - /etc/prometheus:/etc/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+      - --storage.tsdb.retention.time=100y
+    restart: unless-stopped
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - ${LAN_IP}:9093:9093
+    volumes:
+      - ${PWD}/alertmanager
+      - alertmanager-data:/data
+    restart: unless-stopped
+  grafana:
+    image: grafana/grafana
+    ports:
+      - ${LAN_IP}:3000:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - grafana-log:/var/log/grafana
+      - /etc/grafana:/etc/grafana
+    restart: unless-stopped
+  node-exporter:
+    image: prom/node-exporter
+    network_mode: host
+    pid: host
+    volumes:
+      - /:/host:ro,rslave
+    command:
+      - '--path.rootfs=/host'
+      - --web.listen-address=${LAN_IP}:9100
+    restart: unless-stopped
+volumes:
+  prometheus-data:
+    external: true
+  alertmanager-data:
+  grafana-data:
+    external: true
+  grafana-log:
+    external: true
